@@ -2,9 +2,7 @@ package com.chekanova.phototool.service.processor.impl;
 
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.function.ToIntFunction;
 
 @Service
 public abstract class AbstractConvolutionProcessor extends AbstractImageProcessor {
@@ -15,14 +13,9 @@ public abstract class AbstractConvolutionProcessor extends AbstractImageProcesso
 
     @Override
     public void recolorPixel(BufferedImage originalImage, BufferedImage resultImage, int x, int y) {
-      /*  double newRed = singlePixelConvolution(originalImage, x, y, Color::getRed);
-        double newGreen = singlePixelConvolution(originalImage, x, y, Color::getGreen);
-        double newBlue = singlePixelConvolution(originalImage, x, y, Color::getBlue);*/
         double[] rgb = singlePixelConvolution(originalImage, x,y);
         int newRGB = createRGBFromColors(fixOutOfRangeRGBValues(rgb[0]),
                 fixOutOfRangeRGBValues(rgb[1]), fixOutOfRangeRGBValues(rgb[2]));
-       /* int newRGB = createRGBFromColors(fixOutOfRangeRGBValues(newRed),
-                fixOutOfRangeRGBValues(newGreen), fixOutOfRangeRGBValues(newBlue));*/
 
         setRGB(resultImage, x, y, newRGB);
     }
@@ -44,26 +37,6 @@ public abstract class AbstractConvolutionProcessor extends AbstractImageProcesso
             }
         }
         return result;
-    }
-
-    public double singlePixelConvolution(BufferedImage originalImage,
-                                         int x, int y,
-                                         ToIntFunction<Color> colorIntFunction) {
-        double[][] k = getFilter();
-        int width = originalImage.getWidth();
-        int height = originalImage.getHeight();
-        int kernelSize = getFilterSize();
-        double output = 0;
-        for (int i = 0; i < kernelSize; ++i) {
-            for (int j = 0; j < kernelSize; ++j) {
-                Color color = new Color(originalImage.getRGB(
-                        indexTrim(x + i - kernelSize / 2, width - 1),
-                        indexTrim(y + j - kernelSize / 2, height - 1)));
-                int pixel = colorIntFunction.applyAsInt(color);
-                output = output + (pixel * k[i][j]);
-            }
-        }
-        return output;
     }
 
     protected int fixOutOfRangeRGBValues(double value) {

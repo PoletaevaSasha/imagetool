@@ -32,8 +32,7 @@ public class ThreadProcessingStrategy implements ProcessingStrategy {
         int height = (int) Math.ceil(originalImage.getHeight() / (double) numberOfThreads);
 
         for (int i = 0; i < numberOfThreads; i++) {
-            final int threadMultiplier = i;
-
+            int threadMultiplier = i;
             Thread thread = new Thread(() -> {
                 int xOrigin = 0;
                 int yOrigin = height * threadMultiplier;

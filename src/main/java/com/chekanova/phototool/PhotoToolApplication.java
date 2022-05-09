@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PhototoolApplication {
+public class PhotoToolApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PhototoolApplication.class, args);
+		SpringApplication.run(PhotoToolApplication.class, args);
 	}
-
 }

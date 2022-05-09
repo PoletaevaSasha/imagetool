@@ -15,12 +15,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
 public class PhotoController {
     private final PhotoService photoService;
+    private static final String JPG = "jpg";
 
     @ModelAttribute("allTypes")
     public ImageProcessorType[] populateTypes() {
@@ -45,7 +50,11 @@ public class PhotoController {
                                              @RequestParam int numberOfThreads,
                                              RedirectAttributes attributes) throws IOException, InterruptedException {
         FileValidationUtil.validateFile(file, attributes);
-        byte[] res = photoService.reprocessImage(file.getBytes(), type, strategy, numberOfThreads);
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(res);
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(file.getBytes());
+        BufferedImage originalImage = ImageIO.read(byteArrayInputStream);
+        BufferedImage resultImage = photoService.reprocessImage(originalImage, type, strategy, numberOfThreads);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ImageIO.write(resultImage, JPG, byteArrayOutputStream);
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(byteArrayOutputStream.toByteArray());
     }
 }

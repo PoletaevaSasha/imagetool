@@ -7,5 +7,5 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public interface ImageService {
-    BufferedImage reprocessImage(BufferedImage originalImage, ImageProcessorType imageProcessorType, MultithreadingStrategy strategy, int numberOfThreads) throws IOException, InterruptedException;
+    BufferedImage reprocess(BufferedImage originalImage, ImageProcessorType imageProcessorType, MultithreadingStrategy strategy, int numberOfThreads) throws IOException, InterruptedException;
 }

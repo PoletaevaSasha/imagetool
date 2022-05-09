@@ -1,5 +1,6 @@
 package com.chekanova.imagetool.service.strategy.impl;
 
+import com.chekanova.imagetool.model.ImageOptions;
 import com.chekanova.imagetool.service.processor.ImageProcessor;
 import com.chekanova.imagetool.service.strategy.ProcessingStrategy;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +27,14 @@ public class ExecutorServiceProcessingStrategy implements ProcessingStrategy {
             Runnable thread = new Thread(() -> {
                 int xOrigin = 0;
                 int yOrigin = height * threadMultiplier;
-                recolorImage(imageProcessor, originalImage, resultImage, xOrigin, yOrigin, width, height);
+                ImageOptions options = new ImageOptions(imageProcessor, xOrigin, yOrigin, width, height);
+                recolorImage(options, originalImage, resultImage);
             });
             executor.submit(thread);
         }
         awaitTerminationAfterShutdown(executor);
     }
+
     private void awaitTerminationAfterShutdown(ExecutorService threadPool) {
         threadPool.shutdown();
         try {

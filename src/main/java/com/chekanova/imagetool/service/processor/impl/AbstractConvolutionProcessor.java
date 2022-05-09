@@ -43,11 +43,7 @@ public abstract class AbstractConvolutionProcessor extends AbstractImageProcesso
         if (value < 0.0) {
             value = -value;
         }
-        if (value > 255) {
-            return 255;
-        } else {
-            return (int) value;
-        }
+        return value > 255 ? 255 : (int) value;
     }
 
     private int indexTrim(int index, int max) {

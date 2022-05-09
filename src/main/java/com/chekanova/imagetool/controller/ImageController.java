@@ -24,8 +24,8 @@ import java.io.IOException;
 @RequestMapping("/image")
 @RequiredArgsConstructor
 public class ImageController {
-    private final ImageService imageService;
     private static final String JPG = "jpg";
+    private final ImageService imageService;
 
     @PostMapping(value = "/process",
             produces = MediaType.IMAGE_JPEG_VALUE)
@@ -37,7 +37,7 @@ public class ImageController {
         FileValidationUtil.validateFile(file, attributes);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(file.getBytes());
         BufferedImage originalImage = ImageIO.read(byteArrayInputStream);
-        BufferedImage resultImage = imageService.reprocessImage(originalImage, type, strategy, numberOfThreads);
+        BufferedImage resultImage = imageService.reprocess(originalImage, type, strategy, numberOfThreads);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageIO.write(resultImage, JPG, byteArrayOutputStream);
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(byteArrayOutputStream.toByteArray());

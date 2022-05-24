@@ -42,4 +42,12 @@ public class ImageController {
         ImageIO.write(resultImage, JPG, byteArrayOutputStream);
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(byteArrayOutputStream.toByteArray());
     }
+
+    @PostMapping(value = "/compare",
+            produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<byte[]> compare(@RequestParam MultipartFile file1,
+                                          @RequestParam MultipartFile file2,
+                                          RedirectAttributes attributes) throws IOException {
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(imageService.compare(file1, file2).toByteArray());
+    }
 }

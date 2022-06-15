@@ -12,14 +12,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Processing strategy that uses {@link ExecutorService} for performance improvement
+ * @author oleksandra.chekanova
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ExecutorServiceProcessingStrategy implements ProcessingStrategy {
 
     @Override
-    public void recolor(ImageProcessor imageProcessor, BufferedImage originalImage, BufferedImage resultImage, int numberOfThreads) {
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+    public void recolor(ImageProcessor imageProcessor, BufferedImage originalImage, BufferedImage resultImage) {
+        int numberOfThreads = Runtime.getRuntime().availableProcessors();
+        ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
         int width = originalImage.getWidth();
         int height = (int) Math.ceil(originalImage.getHeight() / (double) numberOfThreads);
         for (int i = 0; i < numberOfThreads; i++) {

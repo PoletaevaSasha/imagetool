@@ -75,21 +75,6 @@ public class DrawSquareDifferenceServiceImpl implements DrawDifferenceService {
         return box;
     }
 
-    //Left recursive function for investigation in the future
-    //(In real project should remove old code)
-/*    private void buildBox(int x, int y, int w, int h, boolean[][] pix, Box box) {
-        if (x < 0 || x >= w || y < 0 || y >= h || pix[x][y]) {
-            return;
-        }
-        pix[x][y] = true;
-        setNewBoxSize(box, x, y);
-        buildBox(x - 1, y, w, h, pix, box);
-        buildBox(x, y - 1, w, h, pix, box);
-        buildBox(x + 1, y, w, h, pix, box);
-        buildBox(x, y + 1, w, h, pix, box);
-    }*/
-
-
     private void drawBox(BufferedImage image, Box box) {
         if (box == null) {
             return;

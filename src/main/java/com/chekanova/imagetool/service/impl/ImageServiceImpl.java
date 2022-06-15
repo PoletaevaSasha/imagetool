@@ -24,20 +24,25 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
     private static final String PNG = "png";
+    private static final String JPG = "jpg";
     private final Map<MultithreadingStrategy, ProcessingStrategy> processingStrategies;
     private final Map<ImageProcessorType, ImageProcessor> imageProcessors;
     private final ImageComparisonService imageComparisonService;
     private final DrawDifferenceService drawDifferenceService;
 
     @Override
-    public BufferedImage reprocess(BufferedImage originalImage, ImageProcessorType imageProcessorType, MultithreadingStrategy strategy, int numberOfThreads) throws InterruptedException {
+    public ByteArrayOutputStream reprocess(MultipartFile file, ImageProcessorType imageProcessorType, MultithreadingStrategy strategy) throws InterruptedException, IOException {
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(file.getBytes());
+        BufferedImage originalImage = ImageIO.read(byteArrayInputStream);
         BufferedImage resultImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), originalImage.getType());
         ImageProcessor imageProcessor = imageProcessors.get(imageProcessorType);
         long startTime = System.currentTimeMillis();
-        processingStrategies.get(strategy).recolor(imageProcessor, originalImage, resultImage, numberOfThreads);
+        processingStrategies.get(strategy).recolor(imageProcessor, originalImage, resultImage);
         long endTime = System.currentTimeMillis();
-        log.info("{} number of threads {} time duration = {}", strategy, numberOfThreads, endTime - startTime);
-        return resultImage;
+        log.info("processing time for {} time duration = {}", strategy, endTime - startTime);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ImageIO.write(resultImage, JPG, byteArrayOutputStream);
+        return byteArrayOutputStream;
     }
 
     @Override

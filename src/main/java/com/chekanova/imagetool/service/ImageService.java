@@ -4,12 +4,22 @@ import com.chekanova.imagetool.enums.ImageProcessorType;
 import com.chekanova.imagetool.enums.MultithreadingStrategy;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+/**
+ * Basic interface for working with images
+ * @author oleksandra.chekanova
+ */
 public interface ImageService {
-    BufferedImage reprocess(BufferedImage originalImage, ImageProcessorType imageProcessorType, MultithreadingStrategy strategy, int numberOfThreads) throws InterruptedException;
+    /**
+     * Processes {@code originalImage} according to the image processor type and returns the result
+     * @param originalImage must not be null. Original image
+     * @param imageProcessorType must not be null. Defines how the image is processed (for example gray-scale, blur... )
+     * @param strategy must not be null. Defines multithreading strategy for image processing and the framework for paralleling processing.
+     * @return ByteArrayOutputStream result with the changed image
+     */
+    ByteArrayOutputStream reprocess(MultipartFile originalImage, ImageProcessorType imageProcessorType, MultithreadingStrategy strategy) throws InterruptedException, IOException;
 
     /**
      * Compares two images with the same size by each pixel and returns first image,

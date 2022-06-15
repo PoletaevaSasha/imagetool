@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * Processing strategy that doesn't use multithreading for performance improvement
+ * @author oleksandra.chekanova
+ */
 @Service
 @RequiredArgsConstructor
 public class SingleProcessingStrategy implements ProcessingStrategy {
 
     @Override
-    public void recolor(ImageProcessor imageProcessor, BufferedImage originalImage, BufferedImage resultImage, int numberOfThreads) {
+    public void recolor(ImageProcessor imageProcessor, BufferedImage originalImage, BufferedImage resultImage) {
         ImageOptions options = new ImageOptions(imageProcessor, 0, 0, originalImage.getWidth(), originalImage.getHeight());
         recolorImage(options, originalImage, resultImage);
     }

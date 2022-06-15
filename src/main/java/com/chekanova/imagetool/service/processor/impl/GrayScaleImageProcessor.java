@@ -2,9 +2,13 @@ package com.chekanova.imagetool.service.processor.impl;
 
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+/**
+ * Processor for making original image gray scale
+ * @author oleksandra.chekanova
+ */
 @Service
 public class GrayScaleImageProcessor extends AbstractImageProcessor {
 

@@ -21,7 +21,7 @@ public class ForkJoinPoolStrategyTest extends AbstractProcessingStrategyTest{
         BufferedImage originalImage = ImageIO.read(new File(SOURCE_FILE));
         BufferedImage result = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), originalImage.getType());
 
-        testedObject.recolor(getIdentityConvolutionProcessor(), originalImage, result, 10);
+        testedObject.recolor(getIdentityConvolutionProcessor(), originalImage, result);
 
         assertTrue("For identity filter results should be equals ", bufferedImagesEqual(originalImage, result));
     }

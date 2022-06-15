@@ -11,6 +11,14 @@ public abstract class AbstractConvolutionProcessor extends AbstractImageProcesso
 
     protected abstract int getFilterSize();
 
+    /**
+     * Recolors pixel with coordinates x and y from {@code originalImage} according to convolution,
+     * save it to {@code resultImage}
+     * @param originalImage must not be null. Original image.
+     * @param resultImage must not be null. Image with changed pixel.
+     * @param x not null. X-coordinate of pixel.
+     * @param y not null. Y-coordinate of pixel.
+     */
     @Override
     public void recolorPixel(BufferedImage originalImage, BufferedImage resultImage, int x, int y) {
         double[] rgb = singlePixelConvolution(originalImage, x,y);
@@ -19,6 +27,14 @@ public abstract class AbstractConvolutionProcessor extends AbstractImageProcesso
 
         setRGB(resultImage, x, y, newRGB);
     }
+
+    /**
+     * Calculate convolution for given pixel with coordinates x and y
+     * @param originalImage must not be null. Original image
+     * @param x not null. Coordinate of pixel.
+     * @param y not null. Coordinate of pixel.
+     * @return array consisting of RGB values for the pixel.
+     */
     protected double[] singlePixelConvolution(BufferedImage originalImage,
                                          int x, int y) {
         double[] result = new double[3];

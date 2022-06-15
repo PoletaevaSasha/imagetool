@@ -14,13 +14,18 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveAction;
 
+/**
+ * Processing strategy that uses {@link ForkJoinPool} for performance improvement
+ * @author oleksandra.chekanova
+ */
 @Slf4j
 @Service
 @AllArgsConstructor
 public class ForkJoinPoolStrategy implements ProcessingStrategy {
 
     @Override
-    public void recolor(ImageProcessor imageProcessor, BufferedImage originalImage, BufferedImage resultImage, int numberOfThreads) {
+    public void recolor(ImageProcessor imageProcessor, BufferedImage originalImage, BufferedImage resultImage) {
+        int numberOfThreads = Runtime.getRuntime().availableProcessors();
         ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
         int threshold = originalImage.getHeight() / numberOfThreads;
         ImageOptions options = new ImageOptions(imageProcessor, 0, 0, originalImage.getWidth(), originalImage.getHeight());

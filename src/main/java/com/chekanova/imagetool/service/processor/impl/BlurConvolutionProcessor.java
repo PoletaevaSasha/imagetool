@@ -2,6 +2,10 @@ package com.chekanova.imagetool.service.processor.impl;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Processor for blurring the original image
+ * @author oleksandra.chekanova
+ */
 @Service
 public class BlurConvolutionProcessor extends AbstractConvolutionProcessor {
 

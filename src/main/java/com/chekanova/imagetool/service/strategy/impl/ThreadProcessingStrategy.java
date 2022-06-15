@@ -11,13 +11,18 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Processing strategy that uses {@link Thread} for performance improvement
+ * @author oleksandra.chekanova
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ThreadProcessingStrategy implements ProcessingStrategy {
 
     @Override
-    public void recolor(ImageProcessor imageProcessor, BufferedImage originalImage, BufferedImage resultImage, int numberOfThreads) throws InterruptedException {
+    public void recolor(ImageProcessor imageProcessor, BufferedImage originalImage, BufferedImage resultImage) throws InterruptedException {
+        int numberOfThreads = Runtime.getRuntime().availableProcessors();
         List<Thread> threads = createThreads(imageProcessor, originalImage, resultImage,numberOfThreads);
         for (Thread thread : threads) {
             thread.start();

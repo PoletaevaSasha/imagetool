@@ -1,7 +1,7 @@
 package com.chekanova.imagetool.service;
 
 import com.chekanova.imagetool.enums.ImageProcessorType;
-import com.chekanova.imagetool.enums.MultithreadingStrategy;
+import com.chekanova.imagetool.enums.ParallelingStrategyType;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
@@ -19,7 +19,7 @@ public interface ImageService {
      * @param strategy must not be null. Defines multithreading strategy for image processing and the framework for paralleling processing.
      * @return ByteArrayOutputStream result with the changed image
      */
-    ByteArrayOutputStream reprocess(MultipartFile originalImage, ImageProcessorType imageProcessorType, MultithreadingStrategy strategy) throws InterruptedException, IOException;
+    ByteArrayOutputStream process(MultipartFile originalImage, ImageProcessorType imageProcessorType, ParallelingStrategyType strategy) throws InterruptedException, IOException;
 
     /**
      * Compares two images with the same size by each pixel and returns first image,

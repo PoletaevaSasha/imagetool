@@ -10,14 +10,14 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertTrue;
 
-public class ThreadProcessingStrategyTest extends AbstractProcessingStrategyTest{
+public class ForkJoinPoolParallelingStrategyTest extends AbstractParallelingStrategyTest {
     public static final String SOURCE_FILE = "src/test/resources/tiger.jpg";
 
     @InjectMocks
-    private ThreadProcessingStrategy testedObject;
+    private ForkJoinPoolParallelingStrategy testedObject;
 
     @Test
-    public void testThreadConvolution() throws IOException, InterruptedException {
+    public void testForkJoinPoolConvolution() throws IOException {
         BufferedImage originalImage = ImageIO.read(new File(SOURCE_FILE));
         BufferedImage result = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), originalImage.getType());
 

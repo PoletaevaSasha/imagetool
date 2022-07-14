@@ -10,11 +10,11 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertTrue;
 
-public class SingleProcessingStrategyTest extends AbstractProcessingStrategyTest{
+public class SingleThreadParallelingStrategyTest extends AbstractParallelingStrategyTest {
     public static final String SOURCE_FILE = "src/test/resources/tiger.jpg";
 
     @InjectMocks
-    private SingleProcessingStrategy testedObject;
+    private SingleThreadParallelingStrategy testedObject;
 
     @Test
     public void testSingleConvolution() throws IOException {

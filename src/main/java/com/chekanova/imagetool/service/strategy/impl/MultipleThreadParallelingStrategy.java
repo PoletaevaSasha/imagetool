@@ -2,7 +2,7 @@ package com.chekanova.imagetool.service.strategy.impl;
 
 import com.chekanova.imagetool.model.ImageOptions;
 import com.chekanova.imagetool.service.processor.ImageProcessor;
-import com.chekanova.imagetool.service.strategy.ProcessingStrategy;
+import com.chekanova.imagetool.service.strategy.ParallelingStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ThreadProcessingStrategy implements ProcessingStrategy {
+public class MultipleThreadParallelingStrategy implements ParallelingStrategy {
 
     @Override
     public void recolor(ImageProcessor imageProcessor, BufferedImage originalImage, BufferedImage resultImage) throws InterruptedException {

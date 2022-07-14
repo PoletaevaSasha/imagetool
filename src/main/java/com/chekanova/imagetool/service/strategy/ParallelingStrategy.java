@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
  * Basic interface for processing
  * @author oleksandra.chekanova
  */
-public interface ProcessingStrategy {
+public interface ParallelingStrategy {
     /**
      * Recolors all pixels of {@code originalImage} and saves the result to {@code resultImage}
      * @param imageProcessor must not be null. Defines how the image is processed (for example gray-scale, blur... )

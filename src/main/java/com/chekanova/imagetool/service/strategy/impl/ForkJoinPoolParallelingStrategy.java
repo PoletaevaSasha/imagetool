@@ -2,7 +2,7 @@ package com.chekanova.imagetool.service.strategy.impl;
 
 import com.chekanova.imagetool.model.ImageOptions;
 import com.chekanova.imagetool.service.processor.ImageProcessor;
-import com.chekanova.imagetool.service.strategy.ProcessingStrategy;
+import com.chekanova.imagetool.service.strategy.ParallelingStrategy;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import java.util.concurrent.RecursiveAction;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class ForkJoinPoolStrategy implements ProcessingStrategy {
+public class ForkJoinPoolParallelingStrategy implements ParallelingStrategy {
 
     @Override
     public void recolor(ImageProcessor imageProcessor, BufferedImage originalImage, BufferedImage resultImage) {

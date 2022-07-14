@@ -1,6 +1,6 @@
 package com.chekanova.imagetool.enums;
 
-public enum MultithreadingStrategy {
+public enum ParallelingStrategyType {
     SINGLE,
     THREADS,
     EXECUTOR_SERVICE,

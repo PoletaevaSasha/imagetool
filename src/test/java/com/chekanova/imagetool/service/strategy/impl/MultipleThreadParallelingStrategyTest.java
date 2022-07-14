@@ -10,14 +10,14 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertTrue;
 
-public class ExecutorServiceProcessingStrategyTest extends AbstractProcessingStrategyTest {
+public class MultipleThreadParallelingStrategyTest extends AbstractParallelingStrategyTest {
     public static final String SOURCE_FILE = "src/test/resources/tiger.jpg";
 
     @InjectMocks
-    private ExecutorServiceProcessingStrategy testedObject;
+    private MultipleThreadParallelingStrategy testedObject;
 
     @Test
-    public void testExecutorServiceConvolution() throws IOException {
+    public void testThreadConvolution() throws IOException, InterruptedException {
         BufferedImage originalImage = ImageIO.read(new File(SOURCE_FILE));
         BufferedImage result = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), originalImage.getType());
 

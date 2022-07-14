@@ -5,7 +5,7 @@ import com.chekanova.imagetool.service.processor.impl.AbstractConvolutionProcess
 import org.mockito.InjectMocks;
 
 
-public abstract class AbstractProcessingStrategyTest  extends AbstractImageToolTest {
+public abstract class AbstractParallelingStrategyTest extends AbstractImageToolTest {
     @InjectMocks
     private IdentityConvolutionProcessor identityConvolutionProcessor;
 

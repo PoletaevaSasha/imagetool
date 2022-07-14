@@ -1,7 +1,7 @@
 package com.chekanova.imagetool.controller;
 
 import com.chekanova.imagetool.enums.ImageProcessorType;
-import com.chekanova.imagetool.enums.MultithreadingStrategy;
+import com.chekanova.imagetool.enums.ParallelingStrategyType;
 import com.chekanova.imagetool.service.ImageService;
 import com.chekanova.imagetool.validation.FileValidationUtil;
 import lombok.RequiredArgsConstructor;
@@ -30,10 +30,10 @@ public class ImageController {
             produces = IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> process(@RequestParam MultipartFile file,
                                           @RequestParam ImageProcessorType type,
-                                          @RequestParam MultithreadingStrategy strategy,
+                                          @RequestParam ParallelingStrategyType strategy,
                                           RedirectAttributes attributes) throws IOException, InterruptedException {
         FileValidationUtil.validateFile(file, attributes);
-        ByteArrayOutputStream resultImage = imageService.reprocess(file, type, strategy);
+        ByteArrayOutputStream resultImage = imageService.process(file, type, strategy);
         return ResponseEntity.ok().contentType(IMAGE_JPEG).body(resultImage.toByteArray());
     }
 

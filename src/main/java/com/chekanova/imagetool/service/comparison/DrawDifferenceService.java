@@ -13,5 +13,5 @@ public interface DrawDifferenceService {
      * @param image target image to draw frame
      * @return BufferedImage with first image, where all differences are marked with frames
      */
-    BufferedImage drawDifference(boolean[][] comparison, BufferedImage image);
+    BufferedImage drawDifference(boolean[][] comparison, BufferedImage image, String frameColor);
 }

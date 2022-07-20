@@ -4,6 +4,7 @@ import com.chekanova.imagetool.enums.ImageProcessorType;
 import com.chekanova.imagetool.enums.ParallelingStrategyType;
 import com.chekanova.imagetool.service.ImageService;
 import com.chekanova.imagetool.validation.FileValidationUtil;
+import com.chekanova.imagetool.validation.HexValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import static org.springframework.http.MediaType.IMAGE_PNG;
 
 @RestController
-@RequestMapping("/image")
+@RequestMapping("/v1/image")
 @RequiredArgsConstructor
 public class ImageController {
     private final ImageService imageService;
@@ -41,7 +42,9 @@ public class ImageController {
             produces = IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> compare(@RequestParam MultipartFile file1,
                                           @RequestParam MultipartFile file2,
+                                          @RequestParam(defaultValue = "#ff0000") String frameColor,
                                           RedirectAttributes attributes) throws IOException {
-        return ResponseEntity.ok().contentType(IMAGE_PNG).body(imageService.compare(file1, file2).toByteArray());
+        HexValidationUtil.validateHex(frameColor, attributes);
+        return ResponseEntity.ok().contentType(IMAGE_PNG).body(imageService.compare(file1, file2, frameColor).toByteArray());
     }
 }

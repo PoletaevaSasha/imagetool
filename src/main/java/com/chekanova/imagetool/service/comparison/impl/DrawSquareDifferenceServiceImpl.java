@@ -26,6 +26,7 @@ public class DrawSquareDifferenceServiceImpl implements DrawDifferenceService {
      *
      * @param comparison boolean array with comparison of two images by pixel.
      * @param image      target image to draw frames
+     * @param frameColor color of the frame to mark differences
      * @return BufferedImage with first image, where all differences are marked with frames
      */
     @Override

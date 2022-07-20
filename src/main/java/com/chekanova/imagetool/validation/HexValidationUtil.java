@@ -18,7 +18,7 @@ public class HexValidationUtil {
     public static void validateHex(String colorCode, RedirectAttributes attributes) {
         if (!pattern.matcher(colorCode).matches()){
             ResourceBundle bundle = ResourceBundle.getBundle("messages", Locale.ENGLISH);
-            String message = bundle.getString(HexValidationUtil.INVALID_HEX);
+            String message = bundle.getString(INVALID_HEX);
             attributes.addFlashAttribute("message", message);
             throw new IllegalArgumentException(message);
         }

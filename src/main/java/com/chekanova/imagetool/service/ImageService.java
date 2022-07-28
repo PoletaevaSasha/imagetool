@@ -2,10 +2,9 @@ package com.chekanova.imagetool.service;
 
 import com.chekanova.imagetool.enums.ImageProcessorType;
 import com.chekanova.imagetool.enums.ParallelingStrategyType;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Basic interface for working with images
@@ -17,9 +16,11 @@ public interface ImageService {
      * @param originalImage must not be null. Original image
      * @param imageProcessorType must not be null. Defines how the image is processed (for example gray-scale, blur... )
      * @param strategy must not be null. Defines multithreading strategy for image processing and the framework for paralleling processing.
+     * @param borderSize number of pixels of border width/height which will be generated
+     * @param borderColorHex color of border which will be generated
      * @return ByteArrayOutputStream result with the changed image
      */
-    ByteArrayOutputStream process(MultipartFile originalImage, ImageProcessorType imageProcessorType, ParallelingStrategyType strategy) throws InterruptedException, IOException;
+    ByteArrayOutputStream process(MultipartFile originalImage, ImageProcessorType imageProcessorType, ParallelingStrategyType strategy, Integer borderSize, String borderColorHex) throws InterruptedException, IOException;
 
     /**
      * Compares two images with the same size by each pixel and returns first image,

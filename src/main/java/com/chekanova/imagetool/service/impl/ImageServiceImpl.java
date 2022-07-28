@@ -7,17 +7,17 @@ import com.chekanova.imagetool.service.comparison.DrawDifferenceService;
 import com.chekanova.imagetool.service.comparison.ImageComparisonService;
 import com.chekanova.imagetool.service.processor.ImageProcessor;
 import com.chekanova.imagetool.service.strategy.ParallelingStrategy;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
+import javax.imageio.ImageIO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -31,13 +31,16 @@ public class ImageServiceImpl implements ImageService {
     private final DrawDifferenceService drawDifferenceService;
 
     @Override
-    public ByteArrayOutputStream process(MultipartFile file, ImageProcessorType imageProcessorType, ParallelingStrategyType strategy) throws InterruptedException, IOException {
+    public ByteArrayOutputStream process(MultipartFile file, ImageProcessorType imageProcessorType, ParallelingStrategyType strategy,
+                                         Integer borderSize, String borderColorHex) throws InterruptedException, IOException {
         BufferedImage originalImage = getBufferedImage(file);
         BufferedImage resultImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), originalImage.getType());
         ImageProcessor imageProcessor = imageProcessors.get(imageProcessorType);
         long startTime = System.currentTimeMillis();
         processingStrategies.get(strategy).recolor(imageProcessor, originalImage, resultImage);
         log.debug("processing time for {} time duration = {}", strategy, System.currentTimeMillis() - startTime);
+
+        resultImage = drawBorder(resultImage, borderSize, borderColorHex);
         return getByteArrayOutputStream(resultImage, JPG);
     }
 
@@ -59,5 +62,25 @@ public class ImageServiceImpl implements ImageService {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageIO.write(image, formatName, byteArrayOutputStream);
         return byteArrayOutputStream;
+    }
+
+    private BufferedImage drawBorder(BufferedImage img, Integer borderSize, String borderColorHex) {
+        if (borderSize == null || borderSize <= 0) {
+            return img;
+        }
+        Image scaledImage = img.getScaledInstance(img.getWidth() - borderSize * 2,
+                img.getHeight() - borderSize * 2, Image.SCALE_SMOOTH);
+        BufferedImage background = new BufferedImage(img.getWidth(), img.getHeight(), img.getType());
+
+        Graphics2D g2d = background.createGraphics();
+        Color color = borderColorHex != null ? Color.decode(borderColorHex) : Color.BLACK;
+        g2d.setPaint(color);
+        g2d.fillRect(0, 0, background.getWidth(), background.getHeight());
+        int startingX = borderSize;
+        int startingY = borderSize;
+        g2d.drawImage(scaledImage, startingX, startingY, null);
+        g2d.dispose();
+
+        return background;
     }
 }

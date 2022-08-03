@@ -13,7 +13,7 @@ import java.util.Map;
 
 @ControllerAdvice
 public class CustomExceptionHandler {
-    @ExceptionHandler({IOException.class, InterruptedException.class, IllegalArgumentException.class})
+    @ExceptionHandler({IllegalArgumentException.class})
     protected ResponseEntity<Object> handleConflict(RuntimeException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date());

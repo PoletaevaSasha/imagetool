@@ -3,8 +3,6 @@ package com.chekanova.imagetool.controller;
 import com.chekanova.imagetool.enums.ImageProcessorType;
 import com.chekanova.imagetool.enums.ParallelingStrategyType;
 import com.chekanova.imagetool.service.ImageService;
-import com.chekanova.imagetool.validation.FileValidationUtil;
-import com.chekanova.imagetool.validation.HexValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +15,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import static com.chekanova.imagetool.validation.ValidationUtil.validateFile;
+import static com.chekanova.imagetool.validation.ValidationUtil.validateHex;
 import static org.springframework.http.MediaType.IMAGE_JPEG;
 import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import static org.springframework.http.MediaType.IMAGE_PNG;
@@ -33,7 +33,7 @@ public class ImageController {
                                           @RequestParam ImageProcessorType type,
                                           @RequestParam ParallelingStrategyType strategy,
                                           RedirectAttributes attributes) throws IOException, InterruptedException {
-        FileValidationUtil.validateFile(file, attributes);
+        validateFile(file, attributes);
         ByteArrayOutputStream resultImage = imageService.process(file, type, strategy);
         return ResponseEntity.ok().contentType(IMAGE_JPEG).body(resultImage.toByteArray());
     }
@@ -44,7 +44,7 @@ public class ImageController {
                                           @RequestParam MultipartFile file2,
                                           @RequestParam(defaultValue = "#ff0000") String frameColor,
                                           RedirectAttributes attributes) throws IOException {
-        HexValidationUtil.validateHex(frameColor, attributes);
+        validateHex(frameColor, attributes);
         return ResponseEntity.ok().contentType(IMAGE_PNG).body(imageService.compare(file1, file2, frameColor).toByteArray());
     }
 }

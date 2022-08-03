@@ -26,18 +26,18 @@ public class DrawSquareDifferenceServiceImpl implements DrawDifferenceService {
      *
      * @param comparison boolean array with comparison of two images by pixel.
      * @param image      target image to draw frames
-     * @param frameColor color of the frame to mark differences
+     * @param rgb        color of the frame to mark differences
      * @return BufferedImage with first image, where all differences are marked with frames
      */
     @Override
-    public BufferedImage drawDifference(boolean[][] comparison, BufferedImage image, String frameColor) {
+    public BufferedImage drawDifference(boolean[][] comparison, BufferedImage image, int rgb) {
         int height = image.getHeight();
         int width = image.getWidth();
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (comparison[i][j]) {
                     Box box = buildBox(i, j, width, height, comparison);
-                    drawBox(image, box, frameColor);
+                    drawBox(image, box, rgb);
                     clearProcessedPixels(box, comparison);
                 }
             }
@@ -76,11 +76,10 @@ public class DrawSquareDifferenceServiceImpl implements DrawDifferenceService {
         return box;
     }
 
-    private void drawBox(BufferedImage image, Box box, String frameColor) {
+    private void drawBox(BufferedImage image, Box box, int rgb) {
         if (box == null) {
             return;
         }
-        int rgb = Color.decode(frameColor).getRGB();
         int minX = getMinWithMargin(box.minX);
         int maxX = getMaxWithMargin(box.maxX, image.getWidth());
         int minY = getMinWithMargin(box.minY);

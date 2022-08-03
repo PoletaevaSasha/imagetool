@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(MockitoJUnitRunner.class)
 public class DrawSquareDifferenceServiceImplTest extends AbstractImageToolTest {
     public static final String SOURCE_FILE = "src/test/resources/";
-    public static final String FRAME_COLOR = "#ff0000";
+    public static final int FRAME_COLOR = -65536;
 
     @Spy
     private final DrawSquareDifferenceServiceImpl testedObject = new DrawSquareDifferenceServiceImpl();

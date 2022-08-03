@@ -27,6 +27,7 @@ public interface ImageService {
      *
      * @param file1 must not be null. File with first image for comparison.
      * @param file2 must not be null. File with second image for comparison.
+     * @param frameColor color of the frame that emphasizes the differences.
      * @return ByteArrayOutputStream with first image, where all differences are marked with frames
      */
     ByteArrayOutputStream compare(MultipartFile file1, MultipartFile file2, String frameColor) throws IOException;

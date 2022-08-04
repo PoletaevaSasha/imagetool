@@ -9,6 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.imageio.ImageIO;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(MockitoJUnitRunner.class)
 public class DrawSquareDifferenceServiceImplTest extends AbstractImageToolTest {
     public static final String SOURCE_FILE = "src/test/resources/";
-    public static final int FRAME_COLOR = -65536;
+    public static final Color FRAME_COLOR = Color.RED;
 
     @Spy
     private final DrawSquareDifferenceServiceImpl testedObject = new DrawSquareDifferenceServiceImpl();

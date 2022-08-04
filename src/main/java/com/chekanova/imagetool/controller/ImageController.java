@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
+import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -49,6 +50,7 @@ public class ImageController {
                                           @RequestParam MultipartFile file2,
                                           @RequestParam(defaultValue = "#ff0000")
                                           @Valid @Pattern(regexp = HEX_PATTERN) String hexColorCode) throws IOException {
-        return ResponseEntity.ok().contentType(IMAGE_PNG).body(imageService.compare(file1, file2, hexColorCode).toByteArray());
+        Color color = Color.decode(hexColorCode);
+        return ResponseEntity.ok().contentType(IMAGE_PNG).body(imageService.compare(file1, file2, color).toByteArray());
     }
 }

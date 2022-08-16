@@ -8,19 +8,21 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Basic interface for working with images
+ *
  * @author oleksandra.chekanova
  */
 public interface ImageService {
     /**
      * Processes {@code originalImage} according to the image processor type and returns the result
-     * @param originalImage must not be null. Original image
+     *
+     * @param originalImage      must not be null. Original image
      * @param imageProcessorType must not be null. Defines how the image is processed (for example gray-scale, blur... )
-     * @param strategy must not be null. Defines multithreading strategy for image processing and the framework for paralleling processing.
-     * @param borderSize number of pixels of border width/height which will be generated
-     * @param borderColorHex color of border which will be generated
+     * @param strategy           must not be null. Defines multithreading strategy for image processing and the framework for paralleling processing.
+     * @param borderSize         number of pixels of border width/height which will be generated
+     * @param borderColorHex     color of border which will be generated
      * @return ByteArrayOutputStream result with the changed image
      */
-    ByteArrayOutputStream process(MultipartFile originalImage, ImageProcessorType imageProcessorType, ParallelingStrategyType strategy, Integer borderSize, String borderColorHex) throws InterruptedException, IOException;
+    ByteArrayOutputStream process(MultipartFile originalImage, ImageProcessorType imageProcessorType, ParallelingStrategyType strategy, int borderSize, String borderColorHex) throws InterruptedException, IOException;
 
     /**
      * Compares two images with the same size by each pixel and returns first image,

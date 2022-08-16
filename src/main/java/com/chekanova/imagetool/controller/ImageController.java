@@ -31,12 +31,11 @@ public class ImageController {
     public ResponseEntity<byte[]> process(@RequestParam MultipartFile file,
                                           @RequestParam ImageProcessorType type,
                                           @RequestParam ParallelingStrategyType strategy,
-                                          @RequestParam(required = false) Integer borderSize,
-                                          @RequestParam(required = false) String frameColor,
+                                          @RequestParam(required = false) int borderSize,
+                                          @RequestParam(required = false, defaultValue = "#000")
+                                                      String frameColor,
                                           RedirectAttributes attributes) throws IOException, InterruptedException {
-        if (frameColor != null) {
-            HexValidationUtil.validateHex(frameColor, attributes);
-        }
+        HexValidationUtil.validateHex(frameColor, attributes);
         FileValidationUtil.validateFile(file, attributes);
         ByteArrayOutputStream resultImage = imageService.process(file, type, strategy, borderSize, frameColor);
         return ResponseEntity.ok().contentType(IMAGE_JPEG).body(resultImage.toByteArray());

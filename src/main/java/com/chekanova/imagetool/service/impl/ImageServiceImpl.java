@@ -32,15 +32,16 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public ByteArrayOutputStream process(MultipartFile file, ImageProcessorType imageProcessorType, ParallelingStrategyType strategy,
-                                         Integer borderSize, String borderColorHex) throws InterruptedException, IOException {
+                                         int borderSize, String borderColorHex) throws InterruptedException, IOException {
         BufferedImage originalImage = getBufferedImage(file);
         BufferedImage resultImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), originalImage.getType());
         ImageProcessor imageProcessor = imageProcessors.get(imageProcessorType);
         long startTime = System.currentTimeMillis();
         processingStrategies.get(strategy).recolor(imageProcessor, originalImage, resultImage);
         log.debug("processing time for {} time duration = {}", strategy, System.currentTimeMillis() - startTime);
-
-        resultImage = drawBorder(resultImage, borderSize, borderColorHex);
+        if (borderSize > 0) {
+            resultImage = drawBorder(resultImage, borderSize, borderColorHex);
+        }
         return getByteArrayOutputStream(resultImage, JPG);
     }
 
@@ -64,16 +65,13 @@ public class ImageServiceImpl implements ImageService {
         return byteArrayOutputStream;
     }
 
-    private BufferedImage drawBorder(BufferedImage img, Integer borderSize, String borderColorHex) {
-        if (borderSize == null || borderSize <= 0) {
-            return img;
-        }
+    private BufferedImage drawBorder(BufferedImage img, int borderSize, String borderColorHex) {
         Image scaledImage = img.getScaledInstance(img.getWidth() - borderSize * 2,
                 img.getHeight() - borderSize * 2, Image.SCALE_SMOOTH);
         BufferedImage background = new BufferedImage(img.getWidth(), img.getHeight(), img.getType());
 
         Graphics2D g2d = background.createGraphics();
-        Color color = borderColorHex != null ? Color.decode(borderColorHex) : Color.BLACK;
+        Color color = Color.decode(borderColorHex);
         g2d.setPaint(color);
         g2d.fillRect(0, 0, background.getWidth(), background.getHeight());
         int startingX = borderSize;

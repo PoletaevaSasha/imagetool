@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 /**
  * Class for creating specific error report, which will be sent to client in response
+ *
  * @author Natanius18
  */
 @ControllerAdvice

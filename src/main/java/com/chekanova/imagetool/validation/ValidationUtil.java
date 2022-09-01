@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 @UtilityClass
-public class FileValidationUtil {
+public class ValidationUtil {
     private static final String IMAGE_JPEG = "image/jpeg";
     private static final String ONLY_IMAGE = "file.only.image";
     private static final String NOT_EMPTY = "file.not.empty";

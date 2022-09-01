@@ -26,17 +26,18 @@ public class DrawSquareDifferenceServiceImpl implements DrawDifferenceService {
      *
      * @param comparison boolean array with comparison of two images by pixel.
      * @param image      target image to draw frames
+     * @param color      color of the frame to mark differences
      * @return BufferedImage with first image, where all differences are marked with frames
      */
     @Override
-    public BufferedImage drawDifference(boolean[][] comparison, BufferedImage image) {
+    public BufferedImage drawDifference(boolean[][] comparison, BufferedImage image, Color color) {
         int height = image.getHeight();
         int width = image.getWidth();
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (comparison[i][j]) {
                     Box box = buildBox(i, j, width, height, comparison);
-                    drawBox(image, box);
+                    drawBox(image, box, color);
                     clearProcessedPixels(box, comparison);
                 }
             }
@@ -75,7 +76,7 @@ public class DrawSquareDifferenceServiceImpl implements DrawDifferenceService {
         return box;
     }
 
-    private void drawBox(BufferedImage image, Box box) {
+    private void drawBox(BufferedImage image, Box box, Color color) {
         if (box == null) {
             return;
         }
@@ -83,13 +84,14 @@ public class DrawSquareDifferenceServiceImpl implements DrawDifferenceService {
         int maxX = getMaxWithMargin(box.maxX, image.getWidth());
         int minY = getMinWithMargin(box.minY);
         int maxY = getMaxWithMargin(box.maxY, image.getHeight());
+        int rgb = color.getRGB();
         for (int x = minX; x <= maxX; x++) {
-            image.setRGB(x, minY, Color.red.getRGB());
-            image.setRGB(x, maxY, Color.red.getRGB());
+            image.setRGB(x, minY, rgb);
+            image.setRGB(x, maxY, rgb);
         }
         for (int y = minY; y <= maxY; y++) {
-            image.setRGB(minX, y, Color.red.getRGB());
-            image.setRGB(maxX, y, Color.red.getRGB());
+            image.setRGB(minX, y, rgb);
+            image.setRGB(maxX, y, rgb);
         }
     }
 

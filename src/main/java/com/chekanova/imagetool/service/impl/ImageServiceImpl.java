@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -42,11 +43,11 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public ByteArrayOutputStream compare(MultipartFile file1, MultipartFile file2) throws IOException {
+    public ByteArrayOutputStream compare(MultipartFile file1, MultipartFile file2, Color color) throws IOException {
         BufferedImage image1 = getBufferedImage(file1);
         BufferedImage image2 = getBufferedImage(file2);
         boolean[][] comparisonResult = imageComparisonService.compare(image1, image2);
-        BufferedImage resultImage = drawDifferenceService.drawDifference(comparisonResult, image1);
+        BufferedImage resultImage = drawDifferenceService.drawDifference(comparisonResult, image1, color);
         return getByteArrayOutputStream(resultImage, PNG);
     }
 

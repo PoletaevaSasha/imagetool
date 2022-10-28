@@ -3,12 +3,15 @@ package com.chekanova.imagetool.controller;
 import com.chekanova.imagetool.enums.ImageProcessorType;
 import com.chekanova.imagetool.enums.ParallelingStrategyType;
 import com.chekanova.imagetool.service.ImageService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -32,22 +35,27 @@ public class ImageController {
     private final ImageService imageService;
     private static final String HEX_PATTERN = "^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$";
 
-
+    @ApiOperation(value = "To add effects to the uploaded image. It is possible to make the image blurry, sharp, grey-scale and highlight the edges")
     @PostMapping(value = "/process",
-            produces = IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> process(@RequestParam MultipartFile file,
-                                          @RequestParam ImageProcessorType type,
-                                          @RequestParam ParallelingStrategyType strategy,
+            produces = IMAGE_JPEG_VALUE
+    )
+    public ResponseEntity<byte[]> process(@ApiParam(value = "Image to be processed", required = true) @RequestPart("file") MultipartFile file,
+                                          @ApiParam(name = "type", value = "Defines how the image is processed (for example gray-scale, blur... )") @RequestParam("type") ImageProcessorType type,
+                                          @ApiParam (name = "strategy", value = "Defines multithreading strategy for image processing", required = true) @RequestParam("strategy") ParallelingStrategyType strategy,
                                           RedirectAttributes attributes) throws IOException, InterruptedException {
         validateFile(file, attributes);
         ByteArrayOutputStream resultImage = imageService.process(file, type, strategy);
         return ResponseEntity.ok().contentType(IMAGE_JPEG).body(resultImage.toByteArray());
     }
 
+    @ApiOperation(value = "To compare two images of the same size and get one of images where all differences are marked with frames")
     @PostMapping(value = "/compare",
             produces = IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> compare(@RequestParam MultipartFile file1,
-                                          @RequestParam MultipartFile file2,
+    public ResponseEntity<byte[]> compare(@ApiParam(value = "First image to be compare", required = true)
+                                          @RequestPart("file1") MultipartFile file1,
+                                          @ApiParam(value = "Second image to be compare", required = true)
+                                          @RequestPart("file2") MultipartFile file2,
+                                          @ApiParam(value = "Color of the frame that emphasizes the differences in hex format", defaultValue = "#ff0000")
                                           @RequestParam(defaultValue = "#ff0000")
                                           @Valid @Pattern(regexp = HEX_PATTERN) String hexColorCode) throws IOException {
         Color color = Color.decode(hexColorCode);

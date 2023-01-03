@@ -2,6 +2,7 @@ package com.chekanova.imagetool.controller;
 
 import com.chekanova.imagetool.enums.ImageProcessorType;
 import com.chekanova.imagetool.enums.ParallelingStrategyType;
+import com.chekanova.imagetool.security.UserRoles;
 import com.chekanova.imagetool.service.ImageService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import java.awt.Color;
@@ -35,6 +37,7 @@ public class ImageController {
     private final ImageService imageService;
     private static final String HEX_PATTERN = "^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$";
 
+    @RolesAllowed({UserRoles.ROLE_ONLY_PROCESS, UserRoles.ROLE_FULL})
     @ApiOperation(value = "To add effects to the uploaded image. It is possible to make the image blurry, sharp, grey-scale and highlight the edges")
     @PostMapping(value = "/process",
             produces = IMAGE_JPEG_VALUE
@@ -48,6 +51,7 @@ public class ImageController {
         return ResponseEntity.ok().contentType(IMAGE_JPEG).body(resultImage.toByteArray());
     }
 
+    @RolesAllowed({UserRoles.ROLE_ONLY_COMPARISON, UserRoles.ROLE_FULL})
     @ApiOperation(value = "To compare two images of the same size and get one of images where all differences are marked with frames")
     @PostMapping(value = "/compare",
             produces = IMAGE_JPEG_VALUE)
